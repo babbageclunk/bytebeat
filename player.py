@@ -96,15 +96,20 @@ def to_infix(expr):
         add_binop(stack, '+')
     return ''.join(_flatten(_safe_pop(stack)))
 
-def main(pattern, start):
+def make_seq(pattern, start):
     g = make_generator(pattern)
     t = start
+    while True:
+        sample = int(g(t)) & 0xff
+        yield t, sample
+        t += 1
+
+
+def main(pattern, start):
     _write = sys.stdout.write
     try:
-        while True:
-            sample = int(g(t)) & 0xff
+        for t, sample in make_seq(pattern, start):
             _write(chr(sample))
-            t += 1
     except KeyboardInterrupt:
         print >> sys.stderr, 'Last time:', t
 

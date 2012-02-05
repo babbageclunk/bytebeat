@@ -2,6 +2,10 @@ This is a small program that takes an expression and uses it to
 generate bytes that you can pipe to aplay (or something else that will
 interpret the bytes as sound).
 
+Run it like so:
+
+./player.py 'program goes here' | aplay
+
 The idea is discussed at http://canonical.org/~kragen/bytebeat/
 
 Originally it took a normal infix Python expression (using t to
@@ -20,8 +24,9 @@ converting it to infix. So "1 2 + -" becomes "0 1 2 + -",  or "(0 - (1
 
 I've also added an index operator (!!, stolen from Haskell) to match
 some of the programs I saw online that got interesting patterns by
-indexing into char arrays, like "2345"[t >> 10]. To avoid the
-complication of string handling, !! takes a number and an
-index, and returns the digit at that index (modulo the length of the
-number, to prevent errors). It gets converted into index(number, idx)
-in infix notation.
+indexing into char arrays, like "2345"[t >> 10]. !! takes a number and
+an index, and returns the digit at that index (modulo the length of
+the number, to prevent errors). It gets converted into index(number,
+idx) in infix notation. (I did that rather than just using Python's []
+operation because using types other than numbers would make it
+trickier to mutate the programs and still guarantee valid output.)
