@@ -6,7 +6,6 @@ import sys
 from textwrap import dedent
 
 pattern = 't 42 t 10 >> & *'
-framerate = 8000
 
 def _index(number, digit):
     chars = str(number)
