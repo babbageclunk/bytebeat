@@ -18,13 +18,11 @@ sound = make_sound(seq, 4000)
 channel = pygame.mixer.find_channel()
 channel.set_endevent(pygame.USEREVENT)
 channel.play(sound)
+channel.queue(make_sound(seq, 4000))
 
-next_sound = make_sound(seq, 4000)
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.USEREVENT:
-            print 'playing another one...'
-            channel.play(next_sound)
-            next_sound = make_sound(seq, 4000)
+            channel.queue(make_sound(seq, 4000))
