@@ -12,7 +12,7 @@ Originally it took a normal infix Python expression (using t to
 represent time). That's still available using -i, but by default it
 uses a postfix notation now. I switched because I'm thinking about
 using genetic algorithms to find interesting music programs, and a
-postfix notation lends itself better to mutating because there are no
+postfix notation lends itself better to mutation because there are no
 syntax errors with mismatched brackets.
 
 For the same reason, the postfix notation adds zeros at the bottom
