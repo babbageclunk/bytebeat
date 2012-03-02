@@ -1,4 +1,5 @@
 # various different mutation operations on stack programs
+from functools import partial
 from itertools import chain, islice
 
 # deleter - removes a section of a program
@@ -48,3 +49,46 @@ class Reverser(RangeMutator):
             islice(sequence, None, start),
             reversed(sequence[start:stop]),
             islice(sequence, stop, None)))
+
+
+# inserter needs to decide - where to insert, what to insert
+# kinds of things - numbers, vars, funcs, operators
+
+def pick_number(seed):
+    val = seed.next()
+    return int(val * val * 1000000)
+
+def pick_var(seed):
+    return 't'
+
+FUNCS = 'sin cos tan ceil'.split()
+OPERATORS = '+ - * / >> & | ^ % !!'.split()
+
+def pick_from_list(items, seed):
+    return items[int(seed.next() * len(items))]
+
+PICKERS = [
+    (0.1, pick_var),
+    (0.5, pick_number),
+    (0.8, partial(pick_from_list, OPERATORS)),
+    (1.0, partial(pick_from_list, FUNCS)),
+]
+
+class Inserter(object):
+
+    def __init__(self, seed, pickers=None):
+        pickers = pickers or PICKERS
+        self.start = seed.next()
+        threshold = seed.next()
+        for value, picker in pickers:
+            if value >= threshold:
+                break
+        self.item = picker(seed)
+
+    def mutate(self, sequence):
+        pos = int(self.start * len(sequence))
+        return list(
+            chain(
+                islice(sequence, None, pos),
+                [self.item],
+                islice(sequence, pos, None)))
