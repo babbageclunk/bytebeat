@@ -34,7 +34,7 @@ class TestMutators(TestCase):
         self.assertEqual(r.mutate(list('1234567')), list('1432567'))
 
     def test_pick_number(self):
-        self.assertEqual(pick_number(iter([0.2])), 40000)
+        self.assertEqual(pick_number(iter([0.2])), '400')
 
     def test_pick_var(self):
         self.assertEqual(pick_var(None), 't')
@@ -56,3 +56,14 @@ class TestMutators(TestCase):
 
         self.assertEqual(i.mutate(list('01234')),
                          ['0', 'p2 0.1', '1', '2', '3', '4'])
+
+    def test_reprs(self):
+        self.assertEqual(repr(Deleter(iter([0.1, 0.1]))),
+                         '<Deleter start=0.1 items=4>')
+        self.assertEqual(repr(Reverser(iter([0.1, 0.1]))),
+                         '<Reverser start=0.1 items=4>')
+        self.assertEqual(repr(Repeater(iter([0.1, 0.1]))),
+                         '<Repeater start=0.1 items=4>')
+        fake_pickers = [(1.0, lambda _: 'item')]
+        self.assertEqual(repr(Inserter(iter([0.1, 0.1]), pickers=fake_pickers)),
+                         '<Inserter start=0.1 item=\'item\'>')

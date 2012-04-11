@@ -96,6 +96,32 @@ def to_infix(expr):
         add_binop(stack, '+')
     return ''.join(_flatten(_safe_pop(stack)))
 
+class Sequencer(object):
+
+    def __init__(self, program, start):
+        self.t = start
+        self._program = None
+        self._g = None
+        self.program = program
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        sample = int(self._g(self.t)) & 0xff
+        result = self.t, sample
+        self.t += 1
+        return result
+
+    @property
+    def program(self):
+        return self._program
+
+    @program.setter
+    def program(self, value):
+        self._program = value
+        self._g = make_generator(self._program)
+
 def make_seq(pattern, start):
     g = make_generator(pattern)
     t = start

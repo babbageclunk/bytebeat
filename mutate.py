@@ -22,6 +22,9 @@ class RangeMutator(object):
             if val >= 1:
                 break
 
+    def __repr__(self):
+        return '<{0.__class__.__name__} start={0.start} items={0.items!r}>'.format(self)
+
     def get_range(self, length):
         start = int(self.start * length)
         return start, start + self.items
@@ -56,12 +59,11 @@ class Reverser(RangeMutator):
 
 def pick_number(seed):
     val = seed.next()
-    return int(val * val * 1000000)
+    return str(int(val * val * 10000))
 
 def pick_var(seed):
     return 't'
 
-FUNCS = 'sin cos tan ceil'.split()
 OPERATORS = '+ - * / >> & | ^ % !!'.split()
 
 def pick_from_list(items, seed):
@@ -69,9 +71,8 @@ def pick_from_list(items, seed):
 
 PICKERS = [
     (0.1, pick_var),
-    (0.5, pick_number),
-    (0.8, partial(pick_from_list, OPERATORS)),
-    (1.0, partial(pick_from_list, FUNCS)),
+    (0.6, pick_number),
+    (1.0, partial(pick_from_list, OPERATORS)),
 ]
 
 class Inserter(object):
@@ -84,6 +85,9 @@ class Inserter(object):
             if value >= threshold:
                 break
         self.item = picker(seed)
+
+    def __repr__(self):
+        return '<Inserter start={0.start} item={0.item!r}>'.format(self)
 
     def mutate(self, sequence):
         pos = int(self.start * len(sequence))

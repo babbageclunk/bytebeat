@@ -1,8 +1,10 @@
+from itertools import islice
 from math import cos, pi, sin, tan
 from unittest import TestCase
 
 from ..player import (
-    _arity, _deparen, _flatten, _index, make_generator, _safe_pop, to_infix
+    _arity, _deparen, _flatten, _index, make_generator, _safe_pop,
+    Sequencer, to_infix
 )
 
 class TestPlayer(TestCase):
@@ -82,3 +84,12 @@ class TestPlayer(TestCase):
         self.assertEqual(_deparen(['(', 'thing', ')']), ['thing'])
         self.assertEqual(_deparen(['a', '(', 'thing', ')', 'b']),
                          ['a', '(', 'thing', ')', 'b'])
+
+    def test_Sequencer(self):
+        s = Sequencer('t', 0)
+        expected = [(0, 0), (1, 1), (2, 2)]
+        self.assertEqual(list(islice(s, 3)), expected)
+        s.program = to_infix('t t *')
+        # the Sequencer remembers where it was up to.
+        expected = [(3, 9), (4, 16), (5, 25)]
+        self.assertEqual(list(islice(s, 3)), expected)
