@@ -4,7 +4,7 @@ from ..mutate import (
     Deleter, Inserter, Repeater, Reverser, pick_number, pick_var, pick_from_list
 )
 
-class TestMutators(TestCase):
+class MutatorTests(TestCase):
 
     def test_deleter(self):
         d = Deleter(iter([0.5, 0.25]))

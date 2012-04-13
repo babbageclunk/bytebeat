@@ -7,7 +7,7 @@ from ..player import (
     Sequencer, to_infix
 )
 
-class TestPlayer(TestCase):
+class PlayerTests(TestCase):
     def test_make_generator(self):
         g = make_generator('t')
         self.assertEqual(g(4), 4)
