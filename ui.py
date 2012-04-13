@@ -3,10 +3,9 @@ from operator import itemgetter
 from numpy import fromiter
 import pygame
 from random import choice, random
-import sys
 
 from mutate import Deleter, Inserter, Repeater, Reverser
-from player import to_infix, Sequencer
+from player import Sequencer
 
 generations = [
     't t 8 >> t 9 >> | * 46 & t 8 >> & t t 13 >> & t 6 >> | ^',
@@ -25,7 +24,7 @@ pygame.init()
 screen = pygame.display.set_mode((640, 480))
 
 current = 0
-seq = Sequencer(to_infix(generations[current]), 0)
+seq = Sequencer(generations[current], 0)
 
 def make_sound_chunk(seq, length):
     samples = fromiter(imap(itemgetter(1), islice(seq, length)), dtype='int8')
@@ -44,7 +43,7 @@ def change_current(direction):
     current += direction
     current = current % len(generations)
     print 'playing:', generations[current]
-    seq.program = to_infix(generations[current])
+    seq.program = generations[current]
     play_and_queue(channel, seq)
 
 MUTATORS = [Inserter, Deleter, Repeater, Reverser]

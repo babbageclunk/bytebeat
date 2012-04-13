@@ -120,7 +120,7 @@ class Sequencer(object):
     @program.setter
     def program(self, value):
         self._program = value
-        self._g = make_generator(self._program)
+        self._g = make_generator(to_infix(self._program))
 
 def make_seq(pattern, start):
     g = make_generator(pattern)

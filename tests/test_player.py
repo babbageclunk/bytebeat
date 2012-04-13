@@ -89,7 +89,7 @@ class TestPlayer(TestCase):
         s = Sequencer('t', 0)
         expected = [(0, 0), (1, 1), (2, 2)]
         self.assertEqual(list(islice(s, 3)), expected)
-        s.program = to_infix('t t *')
+        s.program = 't t *'
         # the Sequencer remembers where it was up to.
         expected = [(3, 9), (4, 16), (5, 25)]
         self.assertEqual(list(islice(s, 3)), expected)
